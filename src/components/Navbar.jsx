@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import SearchBar from "./SearchBar";
 
-// styled component---------------------------------
 const StyleNavbar = styled.div`
   background-color: black;
   color: white;
@@ -28,31 +28,9 @@ const StyleUl = styled.ul`
 const StyleLink = styled(Link)`
   margin-right: 1rem;
 `;
-
-const StyleForm = styled.form`
-  display: flex;
-`;
-
-const StyleInput = styled.input`
-  margin-right: 0.5rem;
-  border-radius: 0.5rem;
-`;
-
-const StyleButton = styled.button`
-  color: white;
-  background-color: green;
-  border-radius: 0.3rem;
-  font-size: 1.2 rem;
-`;
 //-------------------------------------------------
 
 const Navbar = (props) => {
-  const [search, setSearch] = useState("");
-  const change = (e) => {
-    e.preventDefault();
-    setSearch(e.target.value.toLowerCase());
-  };
-
   return (
     <div>
       {/*<StyleNavbar>*/}
@@ -128,18 +106,8 @@ const Navbar = (props) => {
                   Technology
                 </StyleLink>
               </li>
-              {/*</ul>*/}
+              <SearchBar />
             </StyleUl>
-            <StyleForm role="search">
-              <StyleInput
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-                value={search}
-                onChange={change}
-              />
-              <StyleButton type="submit">Search</StyleButton>
-            </StyleForm>
           </div>
         </StyleContainer>
       </nav>

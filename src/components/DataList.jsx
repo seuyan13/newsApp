@@ -3,10 +3,11 @@ import axios from "axios";
 import DataItem from "./DataItem";
 import Footer from "./Footer";
 import styled from "styled-components";
+import { getUrl } from "../utils";
 
 //Styled contpoint-----------------------------------------
 const StyleContainer = styled.div`
-  margin-top: auto 0px auto 0px;
+  margin: auto 0px auto 0px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,34 +18,74 @@ const StyleText = styled.h4`
   text-align: center;
   margin: auto 0 auto 0px;
 `;
+
+const StyleForm = styled.div`
+  display: flex;
+`;
+
+const StyleInput = styled.input`
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
+`;
+
+const StyleButton = styled.button`
+  color: white;
+  background-color: green;
+  border-radius: 0.3rem;
+  font-size: 1.2 rem;
+`;
 //---------------------------------------------------------
 
 const DataList = ({ category, title }) => {
   const [dataList, setDataList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const apiKey = "4a47e45e10be435b828f5f4f0c1a1acd";
+  const [search, setSearch] = useState("");
+  const [item, setItem] = useState(search);
+  const [postsPerPage, setPostsPerPage] = useState(5);
 
   const changePage = (number) => {
     setCurrentPage(number);
   };
 
-  const DataList = async (page) => {
+  const getDateList = async (page, keyword) => {
     await axios
-      .get(
-        category
-          ? `https://newsapi.org/v2/top-headlines?country=nz&category=${category}&apiKey=${apiKey}`
-          : `https://newsapi.org/v2/top-headlines?country=nz&apiKey=${apiKey}`
-      )
+      .get(getUrl({ category, keyword: search }))
       .then((res) => setDataList(res.data.articles));
+    //Test
     console.log(dataList);
   };
 
+  /*
+  const handleChange = (event) => {
+    const { value } = event.target;
+    setSearch(value.toLowerCase());
+  };
+
+  const handleSubmit = () => {
+    console.log(search);
+    getDateList(category);
+    setSearch("");
+    title = search;
+  };
+*/
   useEffect(() => {
-    DataList(currentPage);
-  }, [category, currentPage]);
+    getDateList(currentPage);
+  }, [category]);
 
   return (
     <StyleContainer>
+      {/*}
+      <StyleForm>
+        <StyleInput
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+          onChange={handleChange}
+          value={search}
+        />
+        <StyleButton onClick={handleSubmit}>Search</StyleButton>
+      </StyleForm>
+  */}
       <StyleText>{title}</StyleText>
       {dataList?.map((data) => (
         <DataItem data={data} />
