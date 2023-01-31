@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DataItem from "./DataItem";
-import Footer from "./Footer";
+import Pagination from "./Pagination";
 import styled from "styled-components";
 import { getUrl } from "../utils";
 
@@ -19,27 +19,19 @@ const StyleText = styled.h4`
   margin: auto 0 auto 0px;
 `;
 
-const StyleForm = styled.div`
-  display: flex;
-`;
-
-const StyleInput = styled.input`
-  margin-right: 0.5rem;
-  border-radius: 0.5rem;
-`;
-
-const StyleButton = styled.button`
-  color: white;
-  background-color: green;
-  border-radius: 0.3rem;
-  font-size: 1.2 rem;
-`;
 //---------------------------------------------------------
 
-const DataList = ({ category, title }) => {
+const DataList = ({
+  category,
+  title,
+  search,
+  setSearch,
+  refresh,
+  setRefresh,
+}) => {
   const [dataList, setDataList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const [pageCount, setPageCount] = useState(1);
   const [item, setItem] = useState(search);
   const [postsPerPage, setPostsPerPage] = useState(5);
 
@@ -47,50 +39,39 @@ const DataList = ({ category, title }) => {
     setCurrentPage(number);
   };
 
-  const getDateList = async (page, keyword) => {
-    await axios
-      .get(getUrl({ category, keyword: search }))
-      .then((res) => setDataList(res.data.articles));
-    //Test
-    console.log(dataList);
+  const getDataList = async (page, keyword) => {
+    await axios.get(getUrl({ category, keyword: search })).then((res) => {
+      setDataList(res.data.articles);
+      setPageCount(Math.ceil(res.data.articles.length / 5));
+      setCurrentPage(1);
+    });
   };
 
-  /*
-  const handleChange = (event) => {
-    const { value } = event.target;
-    setSearch(value.toLowerCase());
-  };
-
-  const handleSubmit = () => {
-    console.log(search);
-    getDateList(category);
-    setSearch("");
-    title = search;
-  };
-*/
   useEffect(() => {
-    getDateList(currentPage);
+    getDataList(currentPage);
   }, [category]);
+
+  useEffect(() => {
+    if (refresh) {
+      getDataList(currentPage);
+      setRefresh(false);
+      setSearch("");
+    }
+  }, [refresh]);
 
   return (
     <StyleContainer>
-      {/*}
-      <StyleForm>
-        <StyleInput
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-          onChange={handleChange}
-          value={search}
-        />
-        <StyleButton onClick={handleSubmit}>Search</StyleButton>
-      </StyleForm>
-  */}
       <StyleText>{title}</StyleText>
-      {dataList?.map((data) => (
-        <DataItem data={data} />
-      ))}
-      <Footer pageIndex={currentPage} changePage={changePage} />
+      {dataList?.map((data, index) => {
+        if ((currentPage - 1) * 5 <= index && index < currentPage * 5) {
+          return <DataItem data={data} key={data.url} />;
+        }
+      })}
+      <Pagination
+        pageIndex={currentPage}
+        changePage={changePage}
+        pageCount={pageCount}
+      />
     </StyleContainer>
   );
 };

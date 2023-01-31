@@ -10,6 +10,13 @@ const StyleNavbar = styled.div`
   height: 4rem;
 `;
 
+const Logo = styled(Link)`
+  text-decoration: none;
+  color: orange;
+  font-size: larger;
+  margin-left: 1rem;
+`;
+
 const StyleContainer = styled.div`
   max-width: 100%;
   display: flex;
@@ -30,14 +37,14 @@ const StyleLink = styled(Link)`
 `;
 //-------------------------------------------------
 
-const Navbar = (props) => {
+const Navbar = ({ search, setSearch, setRefresh }) => {
   return (
     <div>
       {/*<StyleNavbar>*/}
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <Link className="navbar-brand" to="/" style={{ color: "orange" }}>
-          Google News
-        </Link>
+        <Logo className="logo" to="/">
+          NewsApp
+        </Logo>
         <StyleContainer>
           <button
             className="navbar-toggler"
@@ -53,15 +60,6 @@ const Navbar = (props) => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <StyleUl>
               <li className="nav-item">
-                <StyleLink
-                  className="nav-link active"
-                  aria-current="page"
-                  to="/"
-                >
-                  General
-                </StyleLink>
-              </li>
-              <li className="test nav-item">
                 <StyleLink
                   className="test nav-link active"
                   aria-current="page"
@@ -106,7 +104,7 @@ const Navbar = (props) => {
                   Technology
                 </StyleLink>
               </li>
-              <SearchBar />
+              <SearchBar search={search} setSearch={setSearch} setRefresh={setRefresh} />
             </StyleUl>
           </div>
         </StyleContainer>

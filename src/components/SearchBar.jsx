@@ -1,5 +1,4 @@
 import React from "react";
-import { search, setSearch } from "./DataList";
 import styled from "styled-components";
 
 const StyleForm = styled.div`
@@ -18,15 +17,14 @@ const StyleButton = styled.button`
   font-size: 1.2 rem;
 `;
 
-function SearchBar(search, setSearch) {
+function SearchBar({ search, setSearch, setRefresh }) {
   const handleChange = (event) => {
-    const { value } = event.target;
+    const value = event.target.value;
     setSearch(value.toLowerCase());
   };
 
   const handleSubmit = () => {
-    console.log(search);
-    setSearch("");
+    setRefresh(true);
   };
   return (
     <div>
@@ -35,8 +33,8 @@ function SearchBar(search, setSearch) {
           type="search"
           placeholder="Search"
           aria-label="Search"
-          onChange={handleChange}
           value={search}
+          onChange={handleChange}
         />
         <StyleButton onClick={handleSubmit}>Search</StyleButton>
       </StyleForm>
