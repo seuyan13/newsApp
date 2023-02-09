@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const StyleForm = styled.div`
   display: flex;
@@ -15,7 +16,12 @@ const StyleButton = styled.button`
   background-color: green;
   border-radius: 0.3rem;
   font-size: 1.2 rem;
+  width: 100%;
+  outline: none;
+  border: none;
 `;
+
+//------------------------------------------------
 
 function SearchBar({ search, setSearch, setRefresh }) {
   const handleChange = (event) => {
@@ -36,7 +42,9 @@ function SearchBar({ search, setSearch, setRefresh }) {
           value={search}
           onChange={handleChange}
         />
-        <StyleButton onClick={handleSubmit}>Search</StyleButton>
+        <Link to={search}>
+          <StyleButton onClick={handleSubmit}>Search</StyleButton>
+        </Link>
       </StyleForm>
     </div>
   );

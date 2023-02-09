@@ -4,7 +4,13 @@ import styled from "styled-components";
 const StyleSelectedButton = styled.button`
   background: darkblue;
   color: white;
+
 `;
+
+const StyleButton=styled.button`
+background: orange;
+`;
+//----------------------------------------------------
 
 const Pagination = ({ pageIndex, changePage, pageCount }) => {
   const pageList = Array.from({ length: pageCount }, (_, index) => index + 1);
@@ -25,13 +31,13 @@ const Pagination = ({ pageIndex, changePage, pageCount }) => {
             );
           } else {
             return (
-              <button
+              <StyleButton
                 key={page}
                 className="page-item"
                 onClick={() => changePage(page)}
               >
                 {page}
-              </button>
+              </StyleButton>
             );
           }
         })}
