@@ -1,5 +1,5 @@
 export function getUrl({ category, keyword }) {
-  const API_KEY = "4a47e45e10be435b828f5f4f0c1a1acd";
+  const API_KEY = "Your_API_Key";
 
   console.log(category, keyword);
   if (keyword) {
